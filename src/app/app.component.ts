@@ -38,4 +38,15 @@ export class AppComponent {
         }
       });
     }
+
+    redirect(event: Event) {
+      event.preventDefault();
+
+      const code = this.shortUrl.split('/').pop();
+
+
+      this.dataService.redirectURL(code!).subscribe(response => {
+        window.location.href = response;
+      });
+    }
 }
