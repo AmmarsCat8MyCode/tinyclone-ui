@@ -16,6 +16,10 @@ import { DataService } from '../services/data.service';
 export class AppComponent {
   constructor(private http: HttpClient, private dataService: DataService) {}
 
+    date = new Date();
+
+    today = this.date.toISOString().split('T')[0] + 'T' + this.date.toTimeString().split(' ')[0].slice(0, 5);
+
     urlForm = new FormGroup({
       longUrl: new FormControl(''),
       timeLimit: new FormControl('')
@@ -25,52 +29,54 @@ export class AppComponent {
 
    
     showModal() {
-      const openModalBtn = document.getElementById('open-modal-btn');
-      const closeModalBtn = document.getElementById('close-modal-btn');
-      const myModal = document.getElementById('result-modal') as HTMLDialogElement;
+const modal = document.getElementById('result-modal') as HTMLDialogElement;
+  modal?.showModal();
+    }
 
-      openModalBtn?.addEventListener('click', () => {
-        if (myModal) {
-          myModal.showModal();
-        }
-      });
-
-      closeModalBtn?.addEventListener('click', () => {
-        if (myModal) {
-          myModal.close();
-        }
-      });
+    showErrorModal() {
+  const modal = document.getElementById('error-modal') as HTMLDialogElement;
+  modal?.showModal();
     }
 
 
 
-    shorten() {
-      const longUrl = this.urlForm.value.longUrl;
-      const timeLimit = this.urlForm.value.timeLimit ? new Date(this.urlForm.value.timeLimit) : undefined;
+  shorten() {
+    const longUrl = this.urlForm.value.longUrl;
+    const timeLimit = this.urlForm.value.timeLimit ? new Date(this.urlForm.value.timeLimit) : undefined;
 
-      this.dataService.generateURL(longUrl!, timeLimit).subscribe({
-        next: (response) => {
-          console.log('Shortened URL:', response);
-          this.showModal();
-          this.shortUrl = response;
-          
-        },
-        error: (err) => {
-          console.error('Error generating short URL:', err);
+    this.dataService.generateURL(longUrl!, timeLimit).subscribe({
+      next: (response) => {
+        console.log('Shortened URL:', response);
+        this.showModal();
+        this.shortUrl = response;
+        
+      },
+      error: (err) => {
+        console.error('Error generating short URL:', err);
+        if  (typeof err.error === 'string') {
           this.shortUrl = err.error;
-          this.showModal();
+          this.showErrorModal();
+        } else {
+          this.shortUrl = "Invalid Request. Please check the URL and try again.";
+          this.showErrorModal();
         }
-      });
+      }
+    });
     }
 
     closeModal() {
-  const modal = document.getElementById('result-modal') as HTMLDialogElement;
-  modal.close();
-}
+      const modal = document.getElementById('result-modal') as HTMLDialogElement;
+      modal.close();
+    }
 
-copyToClipboard() {
-  navigator.clipboard.writeText(this.shortUrl);
-}
+    closeErrorModal() {
+      const modal = document.getElementById('error-modal') as HTMLDialogElement;
+      modal.close();
+    }
+
+    copyToClipboard() {
+      navigator.clipboard.writeText(this.shortUrl);
+    }
 
     redirect(event: Event) {
       event.preventDefault();

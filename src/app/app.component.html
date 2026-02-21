@@ -7,21 +7,20 @@
   <form class="parent" [formGroup]="urlForm" (submit)="shorten()"> 
 
     <div class="child">
-      <label for="url">Long URL:</label>
+      <label for="url">URL:</label>
       <input type="text" id="url" formControlName="longUrl" required>
     </div>
 
 
     <div class="child">
       <label for="expiry">Expires (optional):</label>
-      <input type="datetime-local" id="expiry" formControlName="timeLimit">
+      <input type="datetime-local" [min]="today" id="expiry" formControlName="timeLimit">
     </div>
 
     <div class="child">
       <button id="open-modal-btn" type="submit" class="button-29">Shorten URL</button>
     </div>
     
-
   </form> 
 
 <dialog id="result-modal" class="modal">
@@ -46,6 +45,25 @@
       <button class="primary-btn" (click)="closeModal()">Done</button>
     </div>
 
+  </div>
+</dialog>
+
+<dialog id="error-modal" class="modal">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>Error Generating Short URL</h2>
+      <button class="close-btn" (click)="closeErrorModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <input 
+        type="text" 
+        [value]="shortUrl" 
+        readonly 
+        class="short-url-input"
+      >
+    </div>
   </div>
 </dialog>
   
