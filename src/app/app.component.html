@@ -1,25 +1,52 @@
-<h2>TinyClone URL Shotrener</h2>
-  <form [formGroup]="urlForm" (submit)="shorten()"> 
+<div class="sqr">
+  <header>
+    <h2>TinyClone URL Shortener</h2>
+  </header>
 
-    <div class="url">
+
+  <form class="parent" [formGroup]="urlForm" (submit)="shorten()"> 
+
+    <div class="child">
       <label for="url">Long URL:</label>
       <input type="text" id="url" formControlName="longUrl" required>
     </div>
 
-    <br>
 
-    <div class="exp">
-      <label for="expiry">Expiry Date (optional):</label>
+    <div class="child">
+      <label for="expiry">Expires (optional):</label>
       <input type="datetime-local" id="expiry" formControlName="timeLimit">
     </div>
 
-    <br>
+    <div class="child">
+      <button id="open-modal-btn" type="submit" class="button-29">Shorten URL</button>
+    </div>
+    
 
-    <div class="button">
-      <button type="submit" class="primary">Shorten URL</button>
+  </form> 
+
+<dialog id="result-modal" class="modal">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>Your Short URL is Ready</h2>
+      <button class="close-btn" (click)="closeModal()">×</button>
     </div>
 
-  </form>
-  <br>
+    <div class="modal-body">
+      <input 
+        type="text" 
+        [value]="shortUrl" 
+        readonly 
+        class="short-url-input"
+      >
+      <button class="copy-btn" (click)="copyToClipboard()">Copy</button>
+    </div>
 
-  <a [href]="shortUrl">{{ shortUrl }}</a>
+    <div class="modal-footer">
+      <button class="primary-btn" (click)="closeModal()">Done</button>
+    </div>
+
+  </div>
+</dialog>
+  
+</div>

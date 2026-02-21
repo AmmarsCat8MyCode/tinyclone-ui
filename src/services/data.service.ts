@@ -22,7 +22,8 @@ export class DataService {
 
     return this.httpClient.get(`${this.apiUrl}URL/Generate`, { 
       params, 
-      responseType: 'text' 
+      responseType: 'text' ,
+      withCredentials: true
     });
   }
 

@@ -23,6 +23,27 @@ export class AppComponent {
 
     shortUrl: string = '';
 
+   
+    showModal() {
+      const openModalBtn = document.getElementById('open-modal-btn');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+      const myModal = document.getElementById('result-modal') as HTMLDialogElement;
+
+      openModalBtn?.addEventListener('click', () => {
+        if (myModal) {
+          myModal.showModal();
+        }
+      });
+
+      closeModalBtn?.addEventListener('click', () => {
+        if (myModal) {
+          myModal.close();
+        }
+      });
+    }
+
+
+
     shorten() {
       const longUrl = this.urlForm.value.longUrl;
       const timeLimit = this.urlForm.value.timeLimit ? new Date(this.urlForm.value.timeLimit) : undefined;
@@ -30,14 +51,26 @@ export class AppComponent {
       this.dataService.generateURL(longUrl!, timeLimit).subscribe({
         next: (response) => {
           console.log('Shortened URL:', response);
+          this.showModal();
           this.shortUrl = response;
           
         },
-        error: (error) => {
-          console.error('Error generating short URL:', error);
+        error: (err) => {
+          console.error('Error generating short URL:', err);
+          this.shortUrl = err.error;
+          this.showModal();
         }
       });
     }
+
+    closeModal() {
+  const modal = document.getElementById('result-modal') as HTMLDialogElement;
+  modal.close();
+}
+
+copyToClipboard() {
+  navigator.clipboard.writeText(this.shortUrl);
+}
 
     redirect(event: Event) {
       event.preventDefault();
