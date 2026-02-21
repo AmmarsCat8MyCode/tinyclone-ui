@@ -29,13 +29,13 @@ export class AppComponent {
 
    
     showModal() {
-const modal = document.getElementById('result-modal') as HTMLDialogElement;
-  modal?.showModal();
+      const modal = document.getElementById('result-modal') as HTMLDialogElement;
+      modal?.showModal();
     }
 
     showErrorModal() {
-  const modal = document.getElementById('error-modal') as HTMLDialogElement;
-  modal?.showModal();
+      const modal = document.getElementById('error-modal') as HTMLDialogElement;
+      modal?.showModal();
     }
 
 
@@ -76,6 +76,7 @@ const modal = document.getElementById('result-modal') as HTMLDialogElement;
 
     copyToClipboard() {
       navigator.clipboard.writeText(this.shortUrl);
+      this.closeModal();
     }
 
     redirect(event: Event) {
