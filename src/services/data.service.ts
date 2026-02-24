@@ -30,4 +30,8 @@ export class DataService {
   redirectURL(shortUrl: string): Observable<any> {
     return this.httpClient.get<any>(`${this.apiUrl}URL/r/${shortUrl}`);
   }
+
+  getClickCount(shortUrl: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.apiUrl}URL/ClickCount/${shortUrl}`);
+  }
 }

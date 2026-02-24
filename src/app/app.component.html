@@ -4,7 +4,11 @@
   </header>
 
 
-  <form class="parent" [formGroup]="urlForm" (submit)="shorten()"> 
+  <form 
+    *ngIf="mode === 'shorten'"
+    class="parent" 
+    [formGroup]="urlForm" 
+    (submit)="shorten()"> 
 
     <div class="child">
       <label for="url">URL:</label>
@@ -20,8 +24,37 @@
     <div class="child">
       <button id="open-modal-btn" type="submit" class="button-29">Shorten URL</button>
     </div>
+
+        <div class="child">
+      <button id="open-modal-btn" type="button" class="button-29" (click)="mode = 'clickcount'" >Click Count</button>
+    </div>
     
   </form> 
+
+  <form
+  *ngIf="mode === 'clickcount'" 
+  class="parent"
+  [formGroup]="clickCountForm"
+  (ngSubmit)="getClickCount()">
+
+    <div class="child">
+    <label for="shortUrl">Enter Short URL:</label>
+    <input type="text" id="shortUrl" formControlName="shortUrl" required>
+  </div>
+
+  <div class="child">
+    <button type="submit" class="button-29">Get Click Count</button>
+  </div>
+
+  <div class="child">
+    <button type="button" class="button-29" (click)="mode = 'shorten'">
+      Back to Shortener
+    </button>
+  </div>
+  
+  </form>
+
+<!---------------------------------- Modals -----------IF I MADE EVERY MESSAGE A VARIABLE I COULDVE HAD 1 or MAYBE 2 MODALS AT MOST BUT NOOOOOOOO--------------------------------------->
 
 <dialog id="result-modal" class="modal">
   <div class="modal-content">
@@ -52,7 +85,7 @@
   <div class="modal-content">
 
     <div class="modal-header">
-      <h2>Error Generating Short URL</h2>
+      <h2>Error!</h2>
       <button class="close-btn" (click)="closeErrorModal()">×</button>
     </div>
 
@@ -66,5 +99,25 @@
     </div>
   </div>
 </dialog>
+
+<dialog id="count-modal" class="modal">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>Your Shortened URL Has:</h2>
+      <button class="close-btn" (click)="closeCountModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <input 
+        type="text" 
+        [value]="clickCountRes + ' Clicks'" 
+        readonly 
+        class="short-url-input"
+      >
+    </div>
+  </div>
+</dialog>
   
+
 </div>
